@@ -5,12 +5,11 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
-    tableName = "trending_movie",
+    tableName = "movie_detail",
     indices = [Index(value = ["page"])]
 )
-data class LocalMovie (
-    @PrimaryKey(autoGenerate = true)
-    val id : Long = 0,
-    val page: Int,
+data class LocalMovieDetail (
+    @PrimaryKey
+    val id : Long,
     val data: String,
 )

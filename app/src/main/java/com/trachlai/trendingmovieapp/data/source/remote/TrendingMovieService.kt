@@ -8,9 +8,8 @@ import retrofit2.http.Query
 interface TrendingMovieService {
     @GET("{version}/trending/movie/{time_window}")
     suspend fun fetchTrendingMovies(
-        @Path("version") version : Int,
+        @Path("version") version: Int,
         @Path("time_window") time: String,
-        @Query("page") page: Int,
-        @Query("api_key") apiKey: String
+        @Query("page") page: Int
     ) : Response<RemoteMovieResponse>
 }
