@@ -1,4 +1,8 @@
 package com.trachlai.trendingmovieapp.data.source.remote
 
-class RemoteMovie {
-}
+data class RemoteMovie (
+    val poster_path: String?,
+    val vote_average: Float?,
+    val release_date: String?,
+    val original_title: String?
+)

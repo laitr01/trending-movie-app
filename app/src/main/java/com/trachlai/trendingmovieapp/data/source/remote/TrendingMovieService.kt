@@ -12,5 +12,5 @@ interface TrendingMovieService {
         @Path("time_window") time: String,
         @Query("page") page: Int,
         @Query("api_key") apiKey: String
-    ) : Response<RemoteMovie>
+    ) : Response<RemoteMovieResponse>
 }

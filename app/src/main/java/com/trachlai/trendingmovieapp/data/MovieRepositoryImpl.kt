@@ -1,4 +1,4 @@
 package com.trachlai.trendingmovieapp.data
 
-class TrendingMovie {
+interface MovieRepositoryImpl {
 }

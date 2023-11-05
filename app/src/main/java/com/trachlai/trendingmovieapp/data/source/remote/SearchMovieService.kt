@@ -12,5 +12,5 @@ interface SearchMovieService {
         @Query("query") query: String,
         @Query("page") page: Int,
         @Query("api_key") apiKey: String
-    ) : Response<RemoteMovie>
+    ) : Response<RemoteMovieResponse>
 }
