@@ -31,6 +31,7 @@ class MovieListingAdapter : RecyclerView.Adapter<MovieListingAdapter.MovieListin
                 .into(poster)
             ratingBar.rating = movie.voteAverage
             releaseDate.text = movie.releaseDate
+            averageVote.text = "%.1f".format(movie.voteAverage)
         }
     }
 

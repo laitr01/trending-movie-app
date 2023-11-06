@@ -31,6 +31,7 @@ fun LocalMovie.toMovieList(): List<Movie> {
     if (this.data.isEmpty()) {
         return emptyList()
     }
-    val typeOf = object : TypeToken<Collection<Movie>>() {}.type
-    return Gson().fromJson(this.data, typeOf)
+    val typeOf = object : TypeToken<Collection<RemoteMovie>>() {}.type
+    val list = Gson().fromJson<List<RemoteMovie>>(this.data, typeOf)
+    return list.map { it.toMovie() }
 }

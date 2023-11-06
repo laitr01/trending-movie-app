@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.trachlai.trendingmovieapp.databinding.ActivityMovieListingBinding
 import com.trachlai.trendingmovieapp.movie_listing.search.RecentSearchAdapter
+import com.trachlai.trendingmovieapp.utils.OnScrollListener
 import com.trachlai.trendingmovieapp.utils.UIState
 import dagger.hilt.android.AndroidEntryPoint
 import com.trachlai.trendingmovieapp.utils.Result as Result
@@ -25,10 +26,14 @@ class MovieListingActivity : AppCompatActivity() {
         binding = ActivityMovieListingBinding.inflate(layoutInflater)
         setContentView(binding.root)
         movieListingAdapter = MovieListingAdapter()
-
         binding.movieListingRecyclerView?.apply {
             layoutManager = GridLayoutManager(this@MovieListingActivity, 2)
             adapter = movieListingAdapter
+            addOnScrollListener(object : OnScrollListener() {
+                override fun onScrollToBottom() {
+                    viewModel.loadNext(binding.searchView?.text.toString())
+                }
+            })
         }
 
         with(binding) {
@@ -75,7 +80,7 @@ class MovieListingActivity : AppCompatActivity() {
     }
 
     private fun searchFor(query: String) {
-        viewModel.searchFor(query)
+        viewModel.reload(query)
     }
 
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.trachlai.trendingmovieapp.Config
+import com.trachlai.trendingmovieapp.data.Movie
 import com.trachlai.trendingmovieapp.data.MovieModel
 import com.trachlai.trendingmovieapp.data.MovieRepository
 import com.trachlai.trendingmovieapp.data.source.sharedpreferences.ApplicationPreference
@@ -27,11 +28,12 @@ class MovieListingViewModel @Inject constructor(
 
     private val _moviesListing = MutableLiveData<UIState<MovieModel>>()
     val moviesListing: LiveData<UIState<MovieModel>> = _moviesListing
-
+    private var page = 1
+    private var hasNext = false
+    private val list = mutableListOf<Movie>()
 
     init {
-        fetchTrendingMovies(1)
-        fetchRecentQueries()
+        loadFirst(null)
     }
 
     private fun fetchRecentQueries() {
@@ -85,12 +87,34 @@ class MovieListingViewModel @Inject constructor(
         return currentTime - previousTime > duration
     }
 
-    fun searchFor(query: String?) {
+    private fun searchFor(query: String?) {
         if (query.isNullOrEmpty()) {
-            fetchTrendingMovies(1)
+            fetchTrendingMovies(page)
         } else {
             saveSearchQuery(query)
-            requestSearchMovies(query, 1)
+            requestSearchMovies(query, page)
+        }
+    }
+
+    fun reload(query: String?) {
+        page = 1
+        list.clear()
+        searchFor(query)
+        fetchRecentQueries()
+    }
+
+    fun loadFirst(query: String?) {
+        list.clear()
+        page = 1
+        searchFor(query)
+        fetchRecentQueries()
+    }
+
+    fun loadNext(query: String?) {
+        val isNext = hasNext
+        if (isNext) {
+            hasNext = false
+            searchFor(query)
         }
     }
 }
