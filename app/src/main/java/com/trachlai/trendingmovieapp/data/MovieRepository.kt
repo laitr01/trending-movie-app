@@ -7,8 +7,9 @@ interface MovieRepository {
         page: Int,
         windowTime: String,
         forceUpdate: Boolean
-    ) : Result<List<Movie>>
-    suspend fun requestSearchMovie(version: Int, page: Int, query: String): Result<List<Movie>>
+    ): Result<MovieModel>
+
+    suspend fun requestSearchMovie(version: Int, page: Int, query: String): Result<MovieModel>
     suspend fun fetchTrendingMovieDetail(version: Int, movieId: Long): Result<Movie>
 
     suspend fun refresh(version: Int, page: Int, windowTime: String): Exception?

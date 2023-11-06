@@ -1,6 +1,7 @@
 package com.trachlai.shared_test.data
 
 import com.trachlai.trendingmovieapp.data.Movie
+import com.trachlai.trendingmovieapp.data.MovieModel
 import com.trachlai.trendingmovieapp.data.MovieRepository
 import com.trachlai.trendingmovieapp.utils.Result
 
@@ -10,7 +11,7 @@ class FakeTaskRepository: MovieRepository {
         page: Int,
         windowTime: String,
         forceUpdate: Boolean
-    ): Result<List<Movie>> {
+    ): Result<MovieModel> {
         TODO("Not yet implemented")
     }
 
@@ -18,7 +19,7 @@ class FakeTaskRepository: MovieRepository {
         version: Int,
         page: Int,
         query: String
-    ): Result<List<Movie>> {
+    ): Result<MovieModel> {
         TODO("Not yet implemented")
     }
 

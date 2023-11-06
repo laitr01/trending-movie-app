@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="8dp"
+    style="?attr/materialCardViewFilledStyle"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/poster"
+            android:layout_width="match_parent"
+            android:layout_height="194dp"
+            app:srcCompat="@drawable/default_poster"
+            app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media"
+            android:scaleType="centerCrop"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="A Haunting in Venice"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+                <RatingBar
+                    android:id="@+id/ratingBar"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:rating="3"
+                    android:stepSize="0.1" />
+                <TextView
+                    android:id="@+id/average_vote"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    tools:text="5.0"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?android:attr/textColorSecondary"
+                    />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/release_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:drawableLeftCompat="@drawable/ic_calendar_24"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                tools:text="2023"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textColor="?android:attr/textColorSecondary"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

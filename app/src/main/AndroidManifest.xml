@@ -14,7 +14,7 @@
         android:theme="@style/Theme.TrendingMovieApp"
         tools:targetApi="31">
         <activity
-            android:name=".trending_movie_listing.TrendingMovieActivity"
+            android:name=".movie_listing.MovieListingActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.TrendingMovieApp">

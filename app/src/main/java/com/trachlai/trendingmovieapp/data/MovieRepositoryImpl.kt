@@ -14,12 +14,12 @@ import com.trachlai.trendingmovieapp.utils.Result as Result
 class MovieRepositoryImpl @Inject constructor(
     private val remoteMovieDataSource: MovieRemoteDataSource,
     private val movieDao: MovieDao,
-    @DefaultDispatcher  private val dispatcher: CoroutineDispatcher,
+    @DefaultDispatcher private val dispatcher: CoroutineDispatcher,
     @ApplicationScope private val scope: CoroutineScope,
 ) : MovieRepository {
     override suspend fun getTrendingMovies(
         version: Int, page: Int, windowTime: String, forceUpdate: Boolean
-    ): Result<List<Movie>> {
+    ): Result<MovieModel> {
         if (forceUpdate) {
             val exception = refresh(version, page, windowTime)
             if (exception != null) {
@@ -28,27 +28,26 @@ class MovieRepositoryImpl @Inject constructor(
         }
         val resp = movieDao.getTrendingMoviesBy(page)
         return if (resp == null) {
-            Result.Success(emptyList())
+            Result.Success(MovieModel(page, emptyList()))
         } else {
-            Result.Success(resp.toMovieList())
+            Result.Success(MovieModel(page, resp.toMovieList()))
         }
     }
 
     override suspend fun requestSearchMovie(
         version: Int, page: Int, query: String
-    ): Result<List<Movie>> {
-        when (val resp = remoteMovieDataSource.searchMovies(page, query, page)) {
+    ): Result<MovieModel> {
+        when (val resp = remoteMovieDataSource.searchMovies(version, query, page)) {
             is Result.Error -> resp
             is Result.Success -> {
-                return Result.Success(resp.data.results.map { it.toMovie() })
+                return Result.Success(MovieModel(page, resp.data.results.map { it.toMovie() }))
             }
         }
         return Result.Error(Exception("Exception happened when request search movie."))
     }
 
     override suspend fun fetchTrendingMovieDetail(version: Int, movieId: Long): Result<Movie> {
-        val resp = remoteMovieDataSource.fetchTrendingMovieDetail(version, movieId)
-        when (resp) {
+        when (val resp = remoteMovieDataSource.fetchTrendingMovieDetail(version, movieId)) {
             is Result.Error -> resp
             is Result.Success -> {
                 return Result.Success(resp.data.toMovie())
@@ -66,7 +65,7 @@ class MovieRepositoryImpl @Inject constructor(
 
                 is Result.Success -> {
                     movieDao.deleteTrendingMovies(page)
-                    movieDao.upsertTrendingMovie(resp.data.results.toLocalMovie(page) )
+                    movieDao.upsertTrendingMovie(resp.data.results.toLocalMovie(page))
                     null
                 }
             }

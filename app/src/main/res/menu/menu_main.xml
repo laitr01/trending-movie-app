@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.trachlai.trendingmovieapp.trending_movie_listing.TrendingMovieActivity">
+    tools:context="com.trachlai.trendingmovieapp.movie_listing.MovieListingActivity">
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

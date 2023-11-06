@@ -1,4 +1,4 @@
-package com.trachlai.trendingmovieapp.trending_movie_listing.search
+package com.trachlai.trendingmovieapp.movie_listing.search
 
 import android.content.Context
 import android.view.LayoutInflater

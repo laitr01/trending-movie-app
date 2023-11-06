@@ -24,7 +24,7 @@ class MovieRemoteDataSourceImpl @Inject constructor(
             }
             Result.Error(IOException("Error searching movie ${response.code()} ${response.message()}"))
         },
-        errorMessage = "Error fetching search movie keyword $query"
+        errorMessage = "Error fetching search movie, keyword $query"
     )
 
 

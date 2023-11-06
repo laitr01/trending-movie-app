@@ -5,20 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".trending_movie_listing.TrendingMovieActivity">
-    <!-- NestedScrollingChild goes here (NestedScrollView, RecyclerView, etc.). -->
-    <androidx.core.widget.NestedScrollView
+    tools:context=".movie_listing.MovieListingActivity">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/movie_listing_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/searchbar_scrolling_view_behavior">
-        <!-- Screen content goes here. -->
-    </androidx.core.widget.NestedScrollView>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true">
-
         <com.google.android.material.search.SearchBar
             android:id="@+id/searchBar"
             android:layout_width="match_parent"
@@ -38,5 +36,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </com.google.android.material.search.SearchView>
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:indeterminate="true" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

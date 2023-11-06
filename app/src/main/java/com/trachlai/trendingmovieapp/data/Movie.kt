@@ -7,3 +7,5 @@ data class Movie(
     val releaseDate: String,
     val voteAverage: Float
 )
+
+data class MovieModel (val page: Int, val movies: List<Movie>)
