@@ -1,7 +1,6 @@
 package com.trachlai.trendingmovieapp.data
 
-import android.util.Log
-import com.trachlai.trendingmovieapp.data.source.local.MovieDao
+import com.trachlai.trendingmovieapp.data.source.room.MovieDao
 import com.trachlai.trendingmovieapp.data.source.remote.MovieRemoteDataSource
 import com.trachlai.trendingmovieapp.di.ApplicationScope
 import com.trachlai.trendingmovieapp.di.DefaultDispatcher

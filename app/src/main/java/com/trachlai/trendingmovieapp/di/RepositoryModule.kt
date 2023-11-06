@@ -2,12 +2,8 @@ package com.trachlai.trendingmovieapp.di
 
 import com.trachlai.trendingmovieapp.data.MovieRepository
 import com.trachlai.trendingmovieapp.data.MovieRepositoryImpl
-import com.trachlai.trendingmovieapp.data.source.local.MovieDao
+import com.trachlai.trendingmovieapp.data.source.room.MovieDao
 import com.trachlai.trendingmovieapp.data.source.remote.MovieRemoteDataSource
-import com.trachlai.trendingmovieapp.data.source.remote.MovieRemoteDataSourceImpl
-import com.trachlai.trendingmovieapp.data.source.remote.MovieService
-import com.trachlai.trendingmovieapp.data.source.remote.TrendingMovieService
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -2,8 +2,8 @@ package com.trachlai.trendingmovieapp.di
 
 import android.content.Context
 import androidx.room.Room
-import com.trachlai.trendingmovieapp.data.source.local.MovieDao
-import com.trachlai.trendingmovieapp.data.source.local.MovieDatabase
+import com.trachlai.trendingmovieapp.data.source.room.MovieDao
+import com.trachlai.trendingmovieapp.data.source.room.MovieDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

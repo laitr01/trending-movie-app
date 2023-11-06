@@ -1,4 +1,4 @@
-package com.trachlai.trendingmovieapp.data.source.local
+package com.trachlai.trendingmovieapp.data.source.room
 
 import androidx.room.Entity
 import androidx.room.Index

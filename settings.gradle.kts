@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "TrendingMovieApp"
 include(":app")
- 
+include(":shared-test")

@@ -1,7 +1,6 @@
-package com.trachlai.trendingmovieapp.data.source.local
+package com.trachlai.trendingmovieapp.data.source.room
 
 import androidx.room.Dao
-import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Upsert
 

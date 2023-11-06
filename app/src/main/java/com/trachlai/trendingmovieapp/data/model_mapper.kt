@@ -2,7 +2,7 @@ package com.trachlai.trendingmovieapp.data
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.trachlai.trendingmovieapp.data.source.local.LocalMovie
+import com.trachlai.trendingmovieapp.data.source.room.LocalMovie
 import com.trachlai.trendingmovieapp.data.source.remote.RemoteMovie
 import com.trachlai.trendingmovieapp.utils.orValue
 
