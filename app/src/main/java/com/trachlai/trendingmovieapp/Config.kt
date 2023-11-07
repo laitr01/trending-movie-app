@@ -11,5 +11,5 @@ object Config {
         return BASE_POSTER_PATH + posterPath
     }
 
-    fun getCachedTrendingVideoDuration() : Long = 15 * 60 * 1000
+    fun getCachedTrendingVideoDuration() : Long = 1 * 60 * 1000
 }

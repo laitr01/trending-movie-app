@@ -1,4 +1,4 @@
-package com.trachlai.trendingmovieapp.utils
+package com.trachlai.trendingmovieapp.common
 
 sealed class UIState<out R> {
     object Loading : UIState<Nothing>()

@@ -1,5 +1,6 @@
 package com.trachlai.trendingmovieapp.data
-import com.trachlai.trendingmovieapp.utils.Result as Result
+
+import com.trachlai.trendingmovieapp.common.Result as Result
 
 interface MovieRepository {
     suspend fun getTrendingMovies(

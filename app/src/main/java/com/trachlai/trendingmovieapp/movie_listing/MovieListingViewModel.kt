@@ -11,7 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import com.trachlai.trendingmovieapp.utils.Result as Result
+import com.trachlai.trendingmovieapp.common.Result as Result
 
 @HiltViewModel
 class MovieListingViewModel @Inject constructor(
@@ -43,18 +43,19 @@ class MovieListingViewModel @Inject constructor(
         }
     }
 
-    private fun fetchTrendingMovies(page: Int) {
+    private fun fetchTrendingMovies(page: Int, forceUpdate: Boolean) {
         viewModelScope.launch {
             _movieListingUiLiveData.apply {
-                postValue(value?.copy(uiState = UiState.Loading, viewType = ViewType.Trending))
+                if (value?.action() == Action.FirstLoad || value?.action() == Action.Reload || value?.action() == Action.Retry) {
+                    postValue(value?.copy(uiState = UiState.Loading, viewType = ViewType.Trending))
+                }
             }
             when (val result =
-                movieRepository.getTrendingMovies(Config.API_VERSION, page, "day", forceUpdate())) {
+                movieRepository.getTrendingMovies(Config.API_VERSION, page, "day", forceUpdate)) {
                 is Result.Success -> {
                     _movieListingUiLiveData.apply {
-                        val list =
-                            value?.movieList()?.toMutableList()
-                                ?.apply { addAll(result.data.movies) }
+                        val list = value?.movieList()?.toMutableList()
+                            ?.apply { addAll(result.data.movies) }
                         postValue(
                             value?.copy(
                                 uiState = UiState.Success,
@@ -71,8 +72,7 @@ class MovieListingViewModel @Inject constructor(
                     _movieListingUiLiveData.apply {
                         postValue(
                             value?.doUpdate(
-                                uiState = UiState.Error,
-                                viewType = ViewType.Trending
+                                uiState = UiState.Error, viewType = ViewType.Trending
                             )
                         )
                     }
@@ -84,7 +84,13 @@ class MovieListingViewModel @Inject constructor(
     private fun requestSearchMovies(query: String, page: Int) {
         viewModelScope.launch(viewModelScope.coroutineContext + Dispatchers.IO) {
             _movieListingUiLiveData.apply {
-                postValue(value?.doUpdate(uiState = UiState.Loading, viewType = ViewType.Search))
+                if (value?.action() == Action.FirstLoad || value?.action() == Action.Reload || value?.action() == Action.Retry) {
+                    postValue(
+                        value?.doUpdate(
+                            uiState = UiState.Loading, viewType = ViewType.Search
+                        )
+                    )
+                }
             }
             when (val result =
                 movieRepository.requestSearchMovie(Config.API_VERSION, page, query)) {
@@ -109,8 +115,7 @@ class MovieListingViewModel @Inject constructor(
                     _movieListingUiLiveData.apply {
                         postValue(
                             value?.doUpdate(
-                                uiState = UiState.Error,
-                                viewType = ViewType.Search
+                                uiState = UiState.Error, viewType = ViewType.Search
                             )
                         )
                     }
@@ -119,9 +124,8 @@ class MovieListingViewModel @Inject constructor(
         }
     }
 
-    private fun forceUpdate(): Boolean {
+    private fun forceUpdate(currentTime: Long): Boolean {
         val previousTime = sharedPreferences.getCachedTime()
-        val currentTime = System.currentTimeMillis()
         val duration = Config.getCachedTrendingVideoDuration()
         val forceUpdate = forceUpdate(previousTime, currentTime, duration)
         if (forceUpdate) {
@@ -134,30 +138,36 @@ class MovieListingViewModel @Inject constructor(
         return currentTime - previousTime > duration
     }
 
-    private fun fetchMovieListing(query: String?, page: Int, action: Action) {
+    private fun fetchMovieListing(query: String?, forceUpdate: Boolean) {
         val type = if (query.isNullOrEmpty()) ViewType.Trending else ViewType.Search
         val currentType = _movieListingUiLiveData.value?.viewType()
-        var currentpage = page
         if (type != currentType) {
-            currentpage = 1
-            _movieListingUiLiveData.value?.doUpdate(movies = mutableListOf(), page = currentpage)
+            _movieListingUiLiveData.value?.doUpdate(movies = mutableListOf(), page = 1)
         }
+        val page = _movieListingUiLiveData.value?.page() ?: 0
         if (type == ViewType.Trending) {
-            fetchTrendingMovies(currentpage)
+            fetchTrendingMovies(page, forceUpdate)
         } else {
             saveSearchQuery(query!!)
-            requestSearchMovies(query, currentpage)
+            requestSearchMovies(query, page)
         }
     }
 
     fun reload(query: String?) {
-        fetchMovieListing(query, 1, Action.Reload)
+        val page = 1
+        _movieListingUiLiveData.value?.doUpdate(
+            movies = mutableListOf(), action = Action.Reload, page = page
+        )
+        fetchMovieListing(query, forceUpdate(System.currentTimeMillis()))
         fetchRecentQueries()
     }
 
     private fun loadFirst() {
-        _movieListingUiLiveData.value?.doUpdate(movies = mutableListOf())
-        fetchMovieListing(null, 1, Action.FirstLoad)
+        val page = 1
+        _movieListingUiLiveData.value?.doUpdate(
+            movies = mutableListOf(), action = Action.FirstLoad, page = page
+        )
+        fetchMovieListing(null, forceUpdate(System.currentTimeMillis()))
         fetchRecentQueries()
     }
 
@@ -165,8 +175,8 @@ class MovieListingViewModel @Inject constructor(
         val model = _movieListingUiLiveData.value ?: return
         val isNext = model.hasNext()
         if (isNext) {
-            model.doUpdate(hasNext = false)
-            fetchMovieListing(query, model.page() + 1, Action.LoadMore)
+            model.doUpdate(hasNext = false, action = Action.LoadMore, page = model.page() + 1)
+            fetchMovieListing(query, forceUpdate(System.currentTimeMillis()))
         }
     }
 }

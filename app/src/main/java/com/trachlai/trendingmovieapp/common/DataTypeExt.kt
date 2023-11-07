@@ -1,4 +1,4 @@
-package com.trachlai.trendingmovieapp.utils
+package com.trachlai.trendingmovieapp.common
 
 fun String?.orValue(default: String) : String {
     if (this == null) {

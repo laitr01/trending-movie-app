@@ -1,9 +1,9 @@
 package com.trachlai.trendingmovieapp.data.source.remote
 
-import com.trachlai.trendingmovieapp.utils.safeApiCall
+import com.trachlai.trendingmovieapp.common.safeApiCall
 import java.io.IOException
 import javax.inject.Inject
-import com.trachlai.trendingmovieapp.utils.Result as Result
+import com.trachlai.trendingmovieapp.common.Result as Result
 
 class MovieRemoteDataSourceImpl @Inject constructor(
     private val movieService: MovieService,

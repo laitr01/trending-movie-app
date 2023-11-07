@@ -11,8 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.trachlai.trendingmovieapp.data.Movie
 import com.trachlai.trendingmovieapp.databinding.ActivityMovieListingBinding
 import com.trachlai.trendingmovieapp.movie_listing.search.RecentSearchAdapter
-import com.trachlai.trendingmovieapp.utils.OnScrollListener
-import com.trachlai.trendingmovieapp.utils.UIState
+import com.trachlai.trendingmovieapp.common.OnScrollListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -60,6 +59,9 @@ class MovieListingActivity : AppCompatActivity() {
         viewModel.uiMovieListingLiveData.observe(this) {
             handleUiRendering(it)
         }
+
+        binding.errorScreen.errorScreenButton.setOnClickListener { viewModel.reload(binding.searchView.text.toString()) }
+        binding.emptyScreen.emptyScreenButton.setOnClickListener { viewModel.reload(binding.searchView.text.toString()) }
     }
 
     private fun handleUiRendering(model: MovieListingUiModel?) {

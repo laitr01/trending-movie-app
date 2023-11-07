@@ -13,36 +13,36 @@
     tools:context=".movie_listing.MovieListingActivity">
 
     <TextView
-        android:id="@+id/empty_screen_text"
+        android:id="@+id/error_screen_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/error_message"
         android:textSize="24sp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/empty_screen_image"
+        app:layout_constraintBottom_toTopOf="@+id/error_screen_image"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5" />
 
     <ImageView
-        android:id="@+id/empty_screen_image"
+        android:id="@+id/error_screen_image"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@drawable/ic_error"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/empty_screen_text"
-        app:layout_constraintBottom_toTopOf="@+id/empty_screen_button"
+        app:layout_constraintTop_toBottomOf="@+id/error_screen_text"
+        app:layout_constraintBottom_toTopOf="@+id/error_screen_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5" />
 
     <Button
-        android:id="@+id/empty_screen_button"
+        android:id="@+id/error_screen_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/reload"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/empty_screen_image"
+        app:layout_constraintTop_toBottomOf="@+id/error_screen_image"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5" />

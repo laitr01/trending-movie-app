@@ -2,6 +2,7 @@ package com.trachlai.trendingmovieapp.movie_listing
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.trachlai.trendingmovieapp.data.Movie
@@ -36,9 +37,11 @@ class MovieListingAdapter : RecyclerView.Adapter<MovieListingAdapter.MovieListin
     }
 
     fun addMovieList(movies: List<Movie>) {
-        val previousItemSize = this.movies.size
+        val diffCallback = MovieDiffCallback(this.movies, movies)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        this.movies.clear()
         this.movies.addAll(movies)
-        notifyItemRangeInserted(previousItemSize, movies.size)
+        diffResult.dispatchUpdatesTo(this)
     }
 
     fun clear() {
@@ -49,4 +52,5 @@ class MovieListingAdapter : RecyclerView.Adapter<MovieListingAdapter.MovieListin
     override fun getItemCount(): Int = movies.size
 
     class MovieListingViewHolder(val binding: MovieListingItemBinding) : RecyclerView.ViewHolder(binding.root)
+
 }

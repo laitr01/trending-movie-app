@@ -3,7 +3,7 @@ package com.trachlai.shared_test.data.source
 import com.trachlai.trendingmovieapp.data.source.remote.MovieRemoteDataSource
 import com.trachlai.trendingmovieapp.data.source.remote.RemoteMovie
 import com.trachlai.trendingmovieapp.data.source.remote.RemoteMovieResponse
-import com.trachlai.trendingmovieapp.utils.Result
+import com.trachlai.trendingmovieapp.common.Result
 import java.lang.Exception
 
 class FakeNetworkDataSource(

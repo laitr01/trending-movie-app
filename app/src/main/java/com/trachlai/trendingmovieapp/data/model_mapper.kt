@@ -5,7 +5,7 @@ import com.google.gson.reflect.TypeToken
 import com.trachlai.trendingmovieapp.Config
 import com.trachlai.trendingmovieapp.data.source.room.LocalMovie
 import com.trachlai.trendingmovieapp.data.source.remote.RemoteMovie
-import com.trachlai.trendingmovieapp.utils.orValue
+import com.trachlai.trendingmovieapp.common.orValue
 
 fun RemoteMovie.toMovie(): Movie {
     return Movie(

@@ -1,4 +1,4 @@
-package com.trachlai.trendingmovieapp.utils
+package com.trachlai.trendingmovieapp.common
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView

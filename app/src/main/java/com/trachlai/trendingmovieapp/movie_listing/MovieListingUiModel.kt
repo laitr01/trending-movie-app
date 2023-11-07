@@ -1,8 +1,6 @@
 package com.trachlai.trendingmovieapp.movie_listing
 
 import com.trachlai.trendingmovieapp.data.Movie
-import com.trachlai.trendingmovieapp.data.MovieModel
-import com.trachlai.trendingmovieapp.utils.UIState
 
 enum class ViewType(val id: Int) {
     Search(1),
