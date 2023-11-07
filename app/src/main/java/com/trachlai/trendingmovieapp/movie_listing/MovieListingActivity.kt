@@ -27,7 +27,13 @@ class MovieListingActivity : AppCompatActivity() {
         setContentView(binding.root)
         movieListingAdapter = MovieListingAdapter()
         binding.movieListingRecyclerView.apply {
-            layoutManager = GridLayoutManager(this@MovieListingActivity, 2)
+            val lManager = GridLayoutManager(this@MovieListingActivity, 2)
+            lManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    return if (position == 0) 2 else 1
+                }
+            }
+            layoutManager = lManager
             adapter = movieListingAdapter
             addOnScrollListener(object : OnScrollListener() {
                 override fun onScrollToBottom() {
@@ -81,7 +87,7 @@ class MovieListingActivity : AppCompatActivity() {
                 }
 
                 UiState.Success -> {
-                    renderData(model.movieList(), model.action())
+                    renderData(model.movieList(), model.viewType())
                 }
             }
         } ?: renderEmptyState()
@@ -96,13 +102,14 @@ class MovieListingActivity : AppCompatActivity() {
         }
     }
 
-    private fun renderData(movies: List<Movie>, action: Action) {
+    private fun renderData(movies: List<Movie>, viewType: ViewType) {
         with(binding) {
             progressBar.visibility = View.GONE
             emptyScreen.root.visibility = View.GONE
             errorScreen.root.visibility = View.GONE
             movieListingRecyclerView.visibility = View.VISIBLE
             movieListingAdapter.addMovieList(movies)
+            movieListingAdapter.updateViewType(viewType)
         }
     }
 
