@@ -5,15 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.trachlai.trendingmovieapp.Config
-import com.trachlai.trendingmovieapp.data.Movie
-import com.trachlai.trendingmovieapp.data.MovieModel
 import com.trachlai.trendingmovieapp.data.MovieRepository
 import com.trachlai.trendingmovieapp.data.source.sharedpreferences.ApplicationPreference
-import com.trachlai.trendingmovieapp.utils.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.trachlai.trendingmovieapp.utils.Result as Result
@@ -26,14 +21,12 @@ class MovieListingViewModel @Inject constructor(
     private val _recentQueries = MutableLiveData<List<String>>()
     val recentQueries: LiveData<List<String>> = _recentQueries
 
-    private val _moviesListing = MutableLiveData<UIState<MovieModel>>()
-    val moviesListing: LiveData<UIState<MovieModel>> = _moviesListing
-    private var page = 1
-    private var hasNext = false
-    private val list = mutableListOf<Movie>()
+    private val _movieListingUiLiveData = MutableLiveData(MovieListingUiModel())
+    val uiMovieListingLiveData: LiveData<MovieListingUiModel>
+        get() = _movieListingUiLiveData
 
     init {
-        loadFirst(null)
+        loadFirst()
     }
 
     private fun fetchRecentQueries() {
@@ -52,22 +45,76 @@ class MovieListingViewModel @Inject constructor(
 
     private fun fetchTrendingMovies(page: Int) {
         viewModelScope.launch {
-            _moviesListing.postValue(UIState.Loading)
+            _movieListingUiLiveData.apply {
+                postValue(value?.copy(uiState = UiState.Loading, viewType = ViewType.Trending))
+            }
             when (val result =
                 movieRepository.getTrendingMovies(Config.API_VERSION, page, "day", forceUpdate())) {
-                is Result.Success -> _moviesListing.postValue(UIState.Success(result.data))
-                is Result.Error -> _moviesListing.postValue(UIState.Failure(result.exception))
+                is Result.Success -> {
+                    _movieListingUiLiveData.apply {
+                        val list =
+                            value?.movieList()?.toMutableList()
+                                ?.apply { addAll(result.data.movies) }
+                        postValue(
+                            value?.copy(
+                                uiState = UiState.Success,
+                                movies = list ?: mutableListOf(),
+                                viewType = ViewType.Trending,
+                                page = page,
+                                hasNext = result.data.movies.isNotEmpty()
+                            )
+                        )
+                    }
+                }
+
+                is Result.Error -> {
+                    _movieListingUiLiveData.apply {
+                        postValue(
+                            value?.doUpdate(
+                                uiState = UiState.Error,
+                                viewType = ViewType.Trending
+                            )
+                        )
+                    }
+                }
             }
         }
     }
 
     private fun requestSearchMovies(query: String, page: Int) {
         viewModelScope.launch(viewModelScope.coroutineContext + Dispatchers.IO) {
-            _moviesListing.postValue(UIState.Loading)
+            _movieListingUiLiveData.apply {
+                postValue(value?.doUpdate(uiState = UiState.Loading, viewType = ViewType.Search))
+            }
             when (val result =
                 movieRepository.requestSearchMovie(Config.API_VERSION, page, query)) {
-                is Result.Success -> _moviesListing.postValue(UIState.Success(result.data))
-                is Result.Error -> _moviesListing.postValue(UIState.Failure(result.exception))
+                is Result.Success -> {
+                    _movieListingUiLiveData.apply {
+                        val list = value?.movieList()?.toMutableList()
+                            ?.apply { addAll(result.data.movies) }
+
+                        postValue(
+                            value?.doUpdate(
+                                uiState = UiState.Success,
+                                movies = list ?: mutableListOf(),
+                                viewType = ViewType.Search,
+                                page = page,
+                                hasNext = result.data.movies.isNotEmpty()
+                            )
+                        )
+                    }
+                }
+
+                is Result.Error -> {
+                    _movieListingUiLiveData.apply {
+                        postValue(
+                            value?.doUpdate(
+                                uiState = UiState.Error,
+                                viewType = ViewType.Search
+                            )
+                        )
+                    }
+                }
             }
         }
     }
@@ -87,34 +134,39 @@ class MovieListingViewModel @Inject constructor(
         return currentTime - previousTime > duration
     }
 
-    private fun searchFor(query: String?) {
-        if (query.isNullOrEmpty()) {
-            fetchTrendingMovies(page)
+    private fun fetchMovieListing(query: String?, page: Int, action: Action) {
+        val type = if (query.isNullOrEmpty()) ViewType.Trending else ViewType.Search
+        val currentType = _movieListingUiLiveData.value?.viewType()
+        var currentpage = page
+        if (type != currentType) {
+            currentpage = 1
+            _movieListingUiLiveData.value?.doUpdate(movies = mutableListOf(), page = currentpage)
+        }
+        if (type == ViewType.Trending) {
+            fetchTrendingMovies(currentpage)
         } else {
-            saveSearchQuery(query)
-            requestSearchMovies(query, page)
+            saveSearchQuery(query!!)
+            requestSearchMovies(query, currentpage)
         }
     }
 
     fun reload(query: String?) {
-        page = 1
-        list.clear()
-        searchFor(query)
+        fetchMovieListing(query, 1, Action.Reload)
         fetchRecentQueries()
     }
 
-    fun loadFirst(query: String?) {
-        list.clear()
-        page = 1
-        searchFor(query)
+    private fun loadFirst() {
+        _movieListingUiLiveData.value?.doUpdate(movies = mutableListOf())
+        fetchMovieListing(null, 1, Action.FirstLoad)
         fetchRecentQueries()
     }
 
     fun loadNext(query: String?) {
-        val isNext = hasNext
+        val model = _movieListingUiLiveData.value ?: return
+        val isNext = model.hasNext()
         if (isNext) {
-            hasNext = false
-            searchFor(query)
+            model.doUpdate(hasNext = false)
+            fetchMovieListing(query, model.page() + 1, Action.LoadMore)
         }
     }
 }

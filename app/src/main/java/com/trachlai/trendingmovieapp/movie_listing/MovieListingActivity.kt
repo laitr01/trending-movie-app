@@ -1,18 +1,19 @@
 package com.trachlai.trendingmovieapp.movie_listing
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.trachlai.trendingmovieapp.data.Movie
 import com.trachlai.trendingmovieapp.databinding.ActivityMovieListingBinding
 import com.trachlai.trendingmovieapp.movie_listing.search.RecentSearchAdapter
 import com.trachlai.trendingmovieapp.utils.OnScrollListener
 import com.trachlai.trendingmovieapp.utils.UIState
 import dagger.hilt.android.AndroidEntryPoint
-import com.trachlai.trendingmovieapp.utils.Result as Result
 
 @AndroidEntryPoint
 class MovieListingActivity : AppCompatActivity() {
@@ -26,7 +27,7 @@ class MovieListingActivity : AppCompatActivity() {
         binding = ActivityMovieListingBinding.inflate(layoutInflater)
         setContentView(binding.root)
         movieListingAdapter = MovieListingAdapter()
-        binding.movieListingRecyclerView?.apply {
+        binding.movieListingRecyclerView.apply {
             layoutManager = GridLayoutManager(this@MovieListingActivity, 2)
             adapter = movieListingAdapter
             addOnScrollListener(object : OnScrollListener() {
@@ -37,16 +38,16 @@ class MovieListingActivity : AppCompatActivity() {
         }
 
         with(binding) {
-            searchView?.editText?.setOnEditorActionListener { v, actionId, event ->
+            searchView.editText.setOnEditorActionListener { v, actionId, event ->
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    searchBar?.text = searchView.text
+                    searchBar.text = searchView.text
                     searchFor(searchView.text.toString())
                     searchView.hide()
                     return@setOnEditorActionListener true
                 }
                 false
             }
-            searchView?.setupWithSearchBar(searchBar)
+            searchView.setupWithSearchBar(searchBar)
         }
 
         viewModel.recentQueries.observe(this) {
@@ -56,26 +57,68 @@ class MovieListingActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.moviesListing.observe(this) {
+        viewModel.uiMovieListingLiveData.observe(this) {
+            handleUiRendering(it)
+        }
+    }
+
+    private fun handleUiRendering(model: MovieListingUiModel?) {
+        model?.uiState()?.let {
+            Log.e("DEBUG", model.toString())
             when (it) {
-                is UIState.Loading -> {
-                    binding.progressBar?.visibility = View.VISIBLE
+                UiState.Error -> {
+                    renderErrorState()
                 }
 
-                is UIState.Success -> {
-                    binding.progressBar?.visibility = View.GONE
-                    movieListingAdapter.clear()
-                    movieListingAdapter.addMovieList(it.data.movies)
+                UiState.Empty -> {
+                    renderEmptyState()
                 }
 
-                is UIState.Failure -> {
-                    binding.progressBar?.visibility = View.GONE
+                UiState.Loading -> {
+                    renderLoadingState()
                 }
 
-                else -> {
-                    binding.progressBar?.visibility = View.GONE
+                UiState.Success -> {
+                    renderData(model.movieList(), model.action())
                 }
             }
+        } ?: renderEmptyState()
+    }
+
+    private fun renderLoadingState() {
+        with(binding) {
+            progressBar.visibility = View.VISIBLE
+            emptyScreen.root.visibility = View.GONE
+            errorScreen.root.visibility = View.GONE
+            movieListingRecyclerView.visibility = View.GONE
+        }
+    }
+
+    private fun renderData(movies: List<Movie>, action: Action) {
+        with(binding) {
+            progressBar.visibility = View.GONE
+            emptyScreen.root.visibility = View.GONE
+            errorScreen.root.visibility = View.GONE
+            movieListingRecyclerView.visibility = View.VISIBLE
+            movieListingAdapter.addMovieList(movies)
+        }
+    }
+
+    private fun renderEmptyState() {
+        with(binding) {
+            progressBar.visibility = View.GONE
+            emptyScreen.root.visibility = View.VISIBLE
+            errorScreen.root.visibility = View.GONE
+            movieListingRecyclerView.visibility = View.GONE
+        }
+    }
+
+    private fun renderErrorState() {
+        with(binding) {
+            progressBar.visibility = View.GONE
+            emptyScreen.root.visibility = View.GONE
+            errorScreen.root.visibility = View.VISIBLE
+            movieListingRecyclerView.visibility = View.GONE
         }
     }
 

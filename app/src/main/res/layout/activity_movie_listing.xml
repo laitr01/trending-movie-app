@@ -45,4 +45,12 @@
         android:visibility="gone"
         android:indeterminate="true" />
 
+    <include
+        android:id="@+id/empty_screen"
+        layout="@layout/empty_screen_layout" />
+
+    <include
+        android:id="@+id/error_screen"
+        layout="@layout/error_screen_layout" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
