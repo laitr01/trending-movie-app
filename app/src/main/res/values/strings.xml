@@ -43,5 +43,8 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
-    <string name="searchbar_hint">Search movie...</string>
+    <string name="searchbar_hint">Search movie…</string>
+    <string name="error_message">Something wrong here…</string>
+    <string name="reload">Reload</string>
+    <string name="empty_message">No Data Available</string>
 </resources>
