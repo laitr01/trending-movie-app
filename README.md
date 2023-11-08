@@ -32,7 +32,7 @@ Simple list and detail app using TMDB API to show today's trending movies.
   <li>Shared element transition</li>
 </ul>
 
-##Setup
+## Setup
 
 - Clone and import the project in Android Studio
 - Edit the file local.properties and add the line: tmdb_api_key="47aa75b56464da7a186b813a50035cd4"
