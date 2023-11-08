@@ -23,9 +23,9 @@ Simple list and detail app using TMDB API to show today's trending movies.
   <li>Hilt - dependency injection</li>
  <li> Material 3</li>
       <ul>
-          <liSearch</li>
+          <li>Search</li>
           <li>Card</li>
-          <li>Card</li>
+          <li>Image</li>
       </ul>
   <li>Retrofit2 : http client</li>
   <li>Glide - loading & caching remote images</li>
