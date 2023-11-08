@@ -30,14 +30,15 @@ class MovieListingActivity : AppCompatActivity() {
             val lManager = GridLayoutManager(this@MovieListingActivity, 2)
             lManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
-                    return if (position == 0) 2 else 1
+                    val viewType = movieListingAdapter.getItemViewType(position)
+                    return if (viewType == MovieListingAdapter.VIEW_TYPE_FOOTER || viewType == MovieListingAdapter.VIEW_TYPE_HEADER) 2 else 1
                 }
             }
             layoutManager = lManager
             adapter = movieListingAdapter
             addOnScrollListener(object : OnScrollListener() {
                 override fun onScrollToBottom() {
-                    viewModel.loadNext(binding.searchView?.text.toString())
+                    viewModel.loadNext(binding.searchView.text.toString())
                 }
             })
         }
@@ -87,7 +88,7 @@ class MovieListingActivity : AppCompatActivity() {
                 }
 
                 UiState.Success -> {
-                    renderData(model.movieList(), model.viewType())
+                    renderData(model.movieList(), model.viewType(), model.hasNext(), model.action())
                 }
             }
         } ?: renderEmptyState()
@@ -102,13 +103,18 @@ class MovieListingActivity : AppCompatActivity() {
         }
     }
 
-    private fun renderData(movies: List<Movie>, viewType: ViewType) {
+    private fun renderData(
+        movies: MutableList<Movie>,
+        viewType: ViewType,
+        hasNext: Boolean,
+        action: Action
+    ) {
         with(binding) {
             progressBar.visibility = View.GONE
             emptyScreen.root.visibility = View.GONE
             errorScreen.root.visibility = View.GONE
             movieListingRecyclerView.visibility = View.VISIBLE
-            movieListingAdapter.addMovieList(movies)
+            movieListingAdapter.addMovieList(movies, hasNext, action)
             movieListingAdapter.updateViewType(viewType)
         }
     }

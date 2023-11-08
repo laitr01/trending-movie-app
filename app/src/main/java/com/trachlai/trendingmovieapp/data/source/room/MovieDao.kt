@@ -14,5 +14,5 @@ interface MovieDao {
     suspend fun deleteTrendingMovies()
 
     @Query("select max(page) from trending_movie")
-    suspend fun getMaxPage(): Int
+    suspend fun getMaxPage(): Int?
 }

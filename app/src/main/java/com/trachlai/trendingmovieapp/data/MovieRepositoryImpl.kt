@@ -21,7 +21,7 @@ class MovieRepositoryImpl @Inject constructor(
     override suspend fun getTrendingMovies(
         version: Int, page: Int, windowTime: String, forceUpdate: Boolean
     ): Result<MovieModel> {
-        val maxPage = movieDao.getMaxPage()
+        val maxPage = movieDao.getMaxPage() ?: 0
         if (forceUpdate || page > maxPage) {
             Log.e("DEBUG", "forceUpdate ---> $forceUpdate, page ---> $page, max page ---> $maxPage")
             val exception = refresh(version, page, windowTime)
