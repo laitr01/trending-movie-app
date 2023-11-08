@@ -6,4 +6,7 @@
     <string name="empty_message">No Data Available</string>
     <string name="trending_header_text"> Trending movies</string>
     <string name="search_header_text">Search results</string>
+    <string name="poster_image">Movie Poster</string>
+    <string name="videos">Video</string>
+    <string name="cast">Cast</string>
 </resources>
