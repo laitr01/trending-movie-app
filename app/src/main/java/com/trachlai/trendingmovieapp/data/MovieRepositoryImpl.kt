@@ -1,6 +1,5 @@
 package com.trachlai.trendingmovieapp.data
 
-import android.util.Log
 import com.trachlai.trendingmovieapp.common.Result
 import com.trachlai.trendingmovieapp.data.source.MovieDetail
 import com.trachlai.trendingmovieapp.data.source.remote.MovieRemoteDataSource
@@ -23,7 +22,7 @@ class MovieRepositoryImpl @Inject constructor(
         val maxPage = movieDao.getMaxPage() ?: 0
         if (forceUpdate || page > maxPage) {
             //Log.e("DEBUG", "forceUpdate ---> $forceUpdate, page ---> $page, max page ---> $maxPage")
-            val exception = refresh(version, page, windowTime)
+            val exception = refresh(version, page, windowTime, forceUpdate)
             if (exception != null) {
                 return Result.Error(exception)
             }
@@ -39,7 +38,7 @@ class MovieRepositoryImpl @Inject constructor(
     override suspend fun requestSearchMovie(
         version: Int, page: Int, query: String
     ): Result<MovieModel> {
-        Log.e("DEBUG", "requestSearchMovie ---> page ---> $page, query ---> $query")
+        //Log.e("DEBUG", "requestSearchMovie ---> page ---> $page, query ---> $query")
         return when (val resp = remoteMovieDataSource.searchMovies(version, query, page)) {
             is Result.Error -> resp
             is Result.Success -> {
@@ -67,7 +66,12 @@ class MovieRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun refresh(version: Int, page: Int, windowTime: String): Exception? {
+    override suspend fun refresh(
+        version: Int,
+        page: Int,
+        windowTime: String,
+        forceUpdate: Boolean
+    ): Exception? {
         return withContext(dispatcher) {
             when (val resp = remoteMovieDataSource.fetchTrendingMovies(version, windowTime, page)) {
                 is Result.Error -> {
@@ -75,7 +79,9 @@ class MovieRepositoryImpl @Inject constructor(
                 }
 
                 is Result.Success -> {
-                    movieDao.deleteTrendingMovies()
+                    if (forceUpdate) {
+                        movieDao.deleteTrendingMovies()
+                    }
                     movieDao.upsertTrendingMovie(resp.data.results.toLocalMovie(page))
                     return@withContext null
                 }

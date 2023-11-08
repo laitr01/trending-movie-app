@@ -14,5 +14,5 @@ interface MovieRepository {
     suspend fun requestSearchMovie(version: Int, page: Int, query: String): Result<MovieModel>
     suspend fun fetchTrendingMovieDetail(version: Int, movieId: Long): Result<MovieDetail>
 
-    suspend fun refresh(version: Int, page: Int, windowTime: String): Exception?
+    suspend fun refresh(version: Int, page: Int, windowTime: String, forceUpdate: Boolean): Exception?
 }
