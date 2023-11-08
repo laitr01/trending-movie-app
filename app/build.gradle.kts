@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.konan.properties.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -22,6 +24,9 @@ android {
                 arguments += "room.incremental" to "true"
             }
         }
+        val localProperties = Properties()
+        localProperties.load(project.rootProject.file("local.properties").inputStream())
+        buildConfigField("String", "API_KEY", localProperties["api_key"].toString())
     }
 
     buildTypes {
@@ -54,7 +59,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
     implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
-    
+
     // AndroidX Test - JVM testing
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
