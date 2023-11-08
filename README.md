@@ -21,13 +21,15 @@ Simple list and detail app using TMDB API to show today's trending movies.
           <li>Repository pattern.</li>
         </ul>
   <li>Hilt - dependency injection</li>
-  Material 3
-  Search
-  Card
-  Image
-  Retrofit2 : http client
-  Glide - loading & caching remote images
-  Shared element transition
+ <li> Material 3</li>
+      <ul>
+          <liSearch</li>
+          <li>Card</li>
+          <li>Card</li>
+      </ul>
+  <li>Retrofit2 : http client</li>
+  <li>Glide - loading & caching remote images</li>
+  <li>Shared element transition</li>
 </ul>
 
 ##Setup
