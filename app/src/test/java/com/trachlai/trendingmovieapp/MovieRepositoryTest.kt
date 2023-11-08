@@ -1,9 +1,11 @@
 package com.trachlai.trendingmovieapp
 
-import com.trachlai.shared_test.MainCoroutineRule
+import com.google.common.truth.Truth.assertThat
 import com.trachlai.shared_test.data.source.FakeMovieDao
 import com.trachlai.shared_test.data.source.FakeMovieDetailDao
 import com.trachlai.shared_test.data.source.FakeNetworkDataSource
+import com.trachlai.trendingmovieapp.common.Result
+import com.trachlai.trendingmovieapp.data.MovieModel
 import com.trachlai.trendingmovieapp.data.MovieRepository
 import com.trachlai.trendingmovieapp.data.MovieRepositoryImpl
 import com.trachlai.trendingmovieapp.data.source.remote.MovieRemoteDataSource
@@ -12,18 +14,13 @@ import com.trachlai.trendingmovieapp.data.source.remote.RemoteMovieResponse
 import com.trachlai.trendingmovieapp.data.source.room.LocalMovie
 import com.trachlai.trendingmovieapp.data.source.room.MovieDao
 import com.trachlai.trendingmovieapp.data.source.room.MovieDetailDao
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
-import com.google.common.truth.Truth.assertThat
-import com.trachlai.trendingmovieapp.data.MovieModel
-import com.trachlai.trendingmovieapp.data.toLocalMovie
 import com.trachlai.trendingmovieapp.data.toMovie
 import com.trachlai.trendingmovieapp.data.toMovieList
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import com.trachlai.trendingmovieapp.common.Result as Result
+import org.junit.Before
+import org.junit.Test
 
 @ExperimentalCoroutinesApi
 class MovieRepositoryTest {

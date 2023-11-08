@@ -1,18 +1,15 @@
 package com.trachlai.trendingmovieapp.data
 
 import android.util.Log
+import com.trachlai.trendingmovieapp.common.Result
 import com.trachlai.trendingmovieapp.data.source.MovieDetail
-import com.trachlai.trendingmovieapp.data.source.room.MovieDao
 import com.trachlai.trendingmovieapp.data.source.remote.MovieRemoteDataSource
+import com.trachlai.trendingmovieapp.data.source.room.MovieDao
 import com.trachlai.trendingmovieapp.data.source.room.MovieDetailDao
-import com.trachlai.trendingmovieapp.di.ApplicationScope
 import com.trachlai.trendingmovieapp.di.DefaultDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.withContext
-import java.lang.Exception
 import javax.inject.Inject
-import com.trachlai.trendingmovieapp.common.Result as Result
 
 class MovieRepositoryImpl @Inject constructor(
     private val remoteMovieDataSource: MovieRemoteDataSource,
