@@ -7,12 +7,14 @@ import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
 import com.bumptech.glide.Glide
 import com.trachlai.trendingmovieapp.common.UIState
 import com.trachlai.trendingmovieapp.common.openUrl
 import com.trachlai.trendingmovieapp.data.source.MovieDetail
 import com.trachlai.trendingmovieapp.databinding.ActivityMovieDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class MovieDetailActivity : AppCompatActivity() {
@@ -21,6 +23,7 @@ class MovieDetailActivity : AppCompatActivity() {
     private val viewModel: MovieDetailViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
 
         binding = ActivityMovieDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -37,6 +40,11 @@ class MovieDetailActivity : AppCompatActivity() {
         binding.homepage.setOnClickListener { openUrl(binding.homepage.text.toString()) }
 
         viewModel.fetchMovieDetail(intent)
+    }
+
+    override fun onBackPressed() {
+        supportFinishAfterTransition()
+        super.onBackPressed()
     }
 
     private fun handleUiRendering(model: UIState<MovieDetail>) {
@@ -98,10 +106,10 @@ class MovieDetailActivity : AppCompatActivity() {
     }
 
     companion object {
-        fun start(context: Context, movieId: Long) {
+        fun start(context: Context, movieId: Long, options: ActivityOptionsCompat) {
             context.startActivity(Intent(context, MovieDetailActivity::class.java).apply {
                 putExtra(MovieDetailViewModel.MOVIE_ID, movieId)
-            })
+            }, options.toBundle())
         }
     }
 }

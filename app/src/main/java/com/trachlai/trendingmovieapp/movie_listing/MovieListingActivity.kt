@@ -6,12 +6,15 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.trachlai.trendingmovieapp.R
 import com.trachlai.trendingmovieapp.data.Movie
 import com.trachlai.trendingmovieapp.databinding.ActivityMovieListingBinding
 import com.trachlai.trendingmovieapp.movie_listing.search.RecentSearchAdapter
 import com.trachlai.trendingmovieapp.common.OnScrollListener
+import com.trachlai.trendingmovieapp.movie_detail.MovieDetailActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,7 +28,16 @@ class MovieListingActivity : AppCompatActivity() {
 
         binding = ActivityMovieListingBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        movieListingAdapter = MovieListingAdapter()
+        movieListingAdapter = MovieListingAdapter { movieId, cardView ->
+            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                this@MovieListingActivity,
+                cardView,
+                this@MovieListingActivity.getString(
+                    R.string.movie_card_transition_name
+                )
+            )
+            MovieDetailActivity.start(this@MovieListingActivity, movieId, options)
+        }
         binding.movieListingRecyclerView.apply {
             val lManager = GridLayoutManager(this@MovieListingActivity, 2)
             lManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {

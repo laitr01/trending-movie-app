@@ -7,16 +7,18 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
+import com.google.android.material.card.MaterialCardView
 import com.trachlai.trendingmovieapp.R
 import com.trachlai.trendingmovieapp.common.DiffCallback
 import com.trachlai.trendingmovieapp.data.Movie
 import com.trachlai.trendingmovieapp.databinding.HeaderLayoutBinding
 import com.trachlai.trendingmovieapp.databinding.MovieListingItemBinding
 import com.trachlai.trendingmovieapp.databinding.ProgressBarLayoutBinding
-import com.trachlai.trendingmovieapp.movie_detail.MovieDetailActivity
 
 
-class MovieListingAdapter : RecyclerView.Adapter<ViewHolder>() {
+class MovieListingAdapter(
+    private val movieCardClickListener: (movieId: Long, cardView: MaterialCardView) -> Unit
+) : RecyclerView.Adapter<ViewHolder>() {
 
     private var movies = mutableListOf<Movie>()
     private var viewType: ViewType = ViewType.Trending
@@ -41,7 +43,7 @@ class MovieListingAdapter : RecyclerView.Adapter<ViewHolder>() {
                     binding.root.setOnClickListener {
                         val pos = adapterPosition.takeIf { it != RecyclerView.NO_POSITION }
                             ?: return@setOnClickListener
-                        MovieDetailActivity.start(it.context, movies[pos].id)
+                        movieCardClickListener.invoke(movies[pos].id, it as MaterialCardView)
                     }
                 }
             }
