@@ -23,14 +23,12 @@ object RepositoryModule {
         movieDao: MovieDao,
         movieDetailDao: MovieDetailDao,
         @DefaultDispatcher dispatcher: CoroutineDispatcher,
-        @ApplicationScope scope: CoroutineScope,
     ): MovieRepository {
         return MovieRepositoryImpl(
             movieRemoteDataSource,
             movieDao,
             movieDetailDao,
             dispatcher,
-            scope
         )
     }
 }

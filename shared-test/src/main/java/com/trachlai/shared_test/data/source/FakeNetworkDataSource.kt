@@ -7,17 +7,14 @@ import com.trachlai.trendingmovieapp.common.Result
 import com.trachlai.trendingmovieapp.data.source.remote.RemoteMovieDetail
 import java.lang.Exception
 
-class FakeNetworkDataSource(
-    var movieResponse: RemoteMovieResponse?,
-    var movieDetail:  RemoteMovie?
-): MovieRemoteDataSource {
+class FakeNetworkDataSource(private val movieResponse: RemoteMovieResponse?): MovieRemoteDataSource {
     override suspend fun searchMovies(
         version: Int,
         query: String,
         page: Int
     ): Result<RemoteMovieResponse> {
         return if (movieResponse != null) {
-            Result.Success(movieResponse!!)
+            Result.Success(movieResponse)
         }else{
             Result.Error(Exception("Movie response is empty"))
         }
@@ -29,7 +26,7 @@ class FakeNetworkDataSource(
         page: Int
     ): Result<RemoteMovieResponse> {
         return if (movieResponse != null) {
-            Result.Success(movieResponse!!)
+            Result.Success(movieResponse)
         }else{
             Result.Error(Exception("Movie response is empty"))
         }

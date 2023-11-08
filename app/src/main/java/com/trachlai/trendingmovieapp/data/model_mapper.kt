@@ -3,11 +3,11 @@ package com.trachlai.trendingmovieapp.data
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.trachlai.trendingmovieapp.Config
-import com.trachlai.trendingmovieapp.data.source.room.LocalMovie
-import com.trachlai.trendingmovieapp.data.source.remote.RemoteMovie
 import com.trachlai.trendingmovieapp.common.orValue
 import com.trachlai.trendingmovieapp.data.source.MovieDetail
+import com.trachlai.trendingmovieapp.data.source.remote.RemoteMovie
 import com.trachlai.trendingmovieapp.data.source.remote.RemoteMovieDetail
+import com.trachlai.trendingmovieapp.data.source.room.LocalMovie
 import com.trachlai.trendingmovieapp.data.source.room.LocalMovieDetail
 
 fun RemoteMovie.toMovie(): Movie {
@@ -43,6 +43,7 @@ fun LocalMovie.toMovieList(): List<Movie> {
     if (this.data.isEmpty()) {
         return emptyList()
     }
+    //Log.e("DEBUG", this.data)
     val typeOf = object : TypeToken<Collection<RemoteMovie>>() {}.type
     val list = Gson().fromJson<List<RemoteMovie>>(this.data, typeOf)
     return list.map { it.toMovie() }

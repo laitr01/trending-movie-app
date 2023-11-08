@@ -19,14 +19,13 @@ class MovieRepositoryImpl @Inject constructor(
     private val movieDao: MovieDao,
     private val movieDetailDao: MovieDetailDao,
     @DefaultDispatcher private val dispatcher: CoroutineDispatcher,
-    @ApplicationScope private val scope: CoroutineScope,
 ) : MovieRepository {
     override suspend fun getTrendingMovies(
         version: Int, page: Int, windowTime: String, forceUpdate: Boolean
     ): Result<MovieModel> {
         val maxPage = movieDao.getMaxPage() ?: 0
         if (forceUpdate || page > maxPage) {
-            Log.e("DEBUG", "forceUpdate ---> $forceUpdate, page ---> $page, max page ---> $maxPage")
+            //Log.e("DEBUG", "forceUpdate ---> $forceUpdate, page ---> $page, max page ---> $maxPage")
             val exception = refresh(version, page, windowTime)
             if (exception != null) {
                 return Result.Error(exception)

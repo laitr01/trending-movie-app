@@ -60,6 +60,9 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     testImplementation(project(":shared-test"))
+    testImplementation("com.google.truth:truth:1.1.4")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
 
     //Retrofit
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
