@@ -4,6 +4,11 @@
 
 Simple list and detail app using TMDB API to show today's trending movies.
 
+
+https://github.com/laitr01/trending-movie-app/assets/14037475/ef342310-e301-4b68-b63f-4ae46fa391ae
+
+
+
 ## Technologies & Architecture
 <ul>
   <li>Minimum SDK level 24</li>
