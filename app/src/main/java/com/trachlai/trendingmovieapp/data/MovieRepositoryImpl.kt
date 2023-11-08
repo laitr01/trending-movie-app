@@ -1,8 +1,10 @@
 package com.trachlai.trendingmovieapp.data
 
 import android.util.Log
+import com.trachlai.trendingmovieapp.data.source.MovieDetail
 import com.trachlai.trendingmovieapp.data.source.room.MovieDao
 import com.trachlai.trendingmovieapp.data.source.remote.MovieRemoteDataSource
+import com.trachlai.trendingmovieapp.data.source.room.MovieDetailDao
 import com.trachlai.trendingmovieapp.di.ApplicationScope
 import com.trachlai.trendingmovieapp.di.DefaultDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
@@ -15,6 +17,7 @@ import com.trachlai.trendingmovieapp.common.Result as Result
 class MovieRepositoryImpl @Inject constructor(
     private val remoteMovieDataSource: MovieRemoteDataSource,
     private val movieDao: MovieDao,
+    private val movieDetailDao: MovieDetailDao,
     @DefaultDispatcher private val dispatcher: CoroutineDispatcher,
     @ApplicationScope private val scope: CoroutineScope,
 ) : MovieRepository {
@@ -49,12 +52,22 @@ class MovieRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun fetchTrendingMovieDetail(version: Int, movieId: Long): Result<Movie> {
-        return when (val resp = remoteMovieDataSource.fetchTrendingMovieDetail(version, movieId)) {
-            is Result.Error -> resp
-            is Result.Success -> {
-                Result.Success(resp.data.toMovie())
+    override suspend fun fetchTrendingMovieDetail(
+        version: Int,
+        movieId: Long
+    ): Result<MovieDetail> {
+        val resp = movieDetailDao.getMovieDetailBy(movieId)
+        return if (resp == null) {
+            when (val result =
+                remoteMovieDataSource.fetchTrendingMovieDetail(version, movieId)) {
+                is Result.Error -> result
+                is Result.Success -> {
+                    movieDetailDao.upsertMovieDetail(result.data.toLocalMovieDetail())
+                    Result.Success(result.data.toMovieDetail())
+                }
             }
+        } else {
+            Result.Success(resp.toMovieDetail())
         }
     }
 

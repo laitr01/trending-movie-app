@@ -13,6 +13,7 @@ import com.trachlai.trendingmovieapp.data.Movie
 import com.trachlai.trendingmovieapp.databinding.HeaderLayoutBinding
 import com.trachlai.trendingmovieapp.databinding.MovieListingItemBinding
 import com.trachlai.trendingmovieapp.databinding.ProgressBarLayoutBinding
+import com.trachlai.trendingmovieapp.movie_detail.MovieDetailActivity
 
 
 class MovieListingAdapter : RecyclerView.Adapter<ViewHolder>() {
@@ -38,9 +39,9 @@ class MovieListingAdapter : RecyclerView.Adapter<ViewHolder>() {
                     )
                 ).apply {
                     binding.root.setOnClickListener {
-                        val movie = adapterPosition.takeIf { it != RecyclerView.NO_POSITION }
+                        val pos = adapterPosition.takeIf { it != RecyclerView.NO_POSITION }
                             ?: return@setOnClickListener
-                        //MovieDetailActivity.startActivityModel(it.context, items[movie])
+                        MovieDetailActivity.start(it.context, movies[pos].id)
                     }
                 }
             }

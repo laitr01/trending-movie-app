@@ -22,15 +22,14 @@
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/movieImageProgressBar"
-        style="?android:attr/progressBarStyle"
         android:layout_width="@dimen/progress_bar_size"
         android:layout_height="@dimen/progress_bar_size"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/movieImage"
         app:layout_constraintEnd_toEndOf="@id/movieImage"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@id/movieImage"
         app:layout_constraintTop_toTopOf="@id/movieImage"
+        android:indeterminate="true"
         tools:visibility="visible" />
 
     <View
@@ -60,7 +59,7 @@
 
         <ScrollView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:scrollbars="none"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -110,15 +109,14 @@
                         tools:rating="4" />
 
                     <TextView
-                        android:id="@+id/numOfVotes"
+                        android:id="@+id/votes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:text="@{viewmodel.movie != null? viewmodel.movie.voteCount + ` votes` : ``}"
                         app:layout_constraintBottom_toBottomOf="@+id/ratingBar"
                         app:layout_constraintStart_toEndOf="@+id/ratingBar"
                         app:layout_constraintTop_toTopOf="@id/ratingBar"
-                        tools:text="189 votes" />
+                        tools:text="4.0 (189 votes)" />
 
                     <LinearLayout
                         android:id="@+id/subInfoLayout"
@@ -134,7 +132,7 @@
                             android:layout_height="wrap_content">
 
                             <com.google.android.material.imageview.ShapeableImageView
-                                android:id="@+id/episodeImage"
+                                android:id="@+id/releaseDateImage"
                                 android:layout_width="18dp"
                                 android:layout_height="18dp"
                                 android:contentDescription="@null"
@@ -143,15 +141,15 @@
                                 app:srcCompat="@drawable/ic_baseline_event_24" />
 
                             <TextView
-                                android:id="@+id/episodeText"
+                                android:id="@+id/releaseDateText"
                                 android:layout_width="wrap_content"
                                 android:layout_height="0dp"
                                 android:layout_marginStart="8dp"
                                 android:gravity="center_vertical"
                                 android:textSize="12sp"
-                                app:layout_constraintBottom_toBottomOf="@id/episodeImage"
-                                app:layout_constraintLeft_toRightOf="@id/episodeImage"
-                                app:layout_constraintTop_toTopOf="@id/episodeImage"
+                                app:layout_constraintBottom_toBottomOf="@id/releaseDateImage"
+                                app:layout_constraintLeft_toRightOf="@id/releaseDateImage"
+                                app:layout_constraintTop_toTopOf="@id/releaseDateImage"
                                 tools:text="08 Nov 2023" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -161,7 +159,7 @@
                             android:layout_marginTop="5dp">
 
                             <com.google.android.material.imageview.ShapeableImageView
-                                android:id="@+id/seasonImage"
+                                android:id="@+id/runtimeImage"
                                 android:layout_width="18dp"
                                 android:layout_height="18dp"
                                 android:contentDescription="@null"
@@ -170,16 +168,16 @@
                                 app:srcCompat="@drawable/ic_baseline_access_time_24" />
 
                             <TextView
-                                android:id="@+id/seasonText"
+                                android:id="@+id/runtimeText"
                                 android:layout_width="wrap_content"
                                 android:layout_height="0dp"
                                 android:layout_marginStart="8dp"
                                 android:gravity="center_vertical"
                                 android:textSize="12sp"
-                                app:layout_constraintBottom_toBottomOf="@id/seasonImage"
-                                app:layout_constraintLeft_toRightOf="@id/seasonImage"
-                                app:layout_constraintTop_toTopOf="@id/seasonImage"
-                                tools:text="2:15 / 135 min" />
+                                app:layout_constraintBottom_toBottomOf="@id/runtimeImage"
+                                app:layout_constraintLeft_toRightOf="@id/runtimeImage"
+                                app:layout_constraintTop_toTopOf="@id/runtimeImage"
+                                tools:text="100 minute" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -188,7 +186,7 @@
                             android:layout_marginTop="5dp">
 
                             <com.google.android.material.imageview.ShapeableImageView
-                                android:id="@+id/airDateImage"
+                                android:id="@+id/languageImage"
                                 android:layout_width="18dp"
                                 android:layout_height="18dp"
                                 android:contentDescription="@null"
@@ -197,15 +195,15 @@
                                 app:srcCompat="@drawable/ic_baseline_language_24" />
 
                             <TextView
-                                android:id="@+id/airDateText"
+                                android:id="@+id/languageText"
                                 android:layout_width="wrap_content"
                                 android:layout_height="0dp"
                                 android:layout_marginStart="8dp"
                                 android:gravity="center_vertical"
                                 android:textSize="12sp"
-                                app:layout_constraintBottom_toBottomOf="@id/airDateImage"
-                                app:layout_constraintLeft_toRightOf="@id/airDateImage"
-                                app:layout_constraintTop_toTopOf="@id/airDateImage"
+                                app:layout_constraintBottom_toBottomOf="@id/languageImage"
+                                app:layout_constraintLeft_toRightOf="@id/languageImage"
+                                app:layout_constraintTop_toTopOf="@id/languageImage"
                                 tools:text="English" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -220,47 +218,19 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:alpha=".7"
-                    android:text="@{viewmodel.movie.overview}"
                     tools:text="Trapped on the beach with their backs to the sea, British and Allied troops are surrounded by enemy forces." />
 
                 <TextView
-                    android:id="@+id/watchTrailerText"
+                    android:id="@+id/homepage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="@string/videos"
-                    android:textSize="18sp" />
+                    android:gravity="center_vertical"
+                    android:drawablePadding="8dp"
+                    app:drawableStartCompat="@drawable/ic_baseline_language_24"
+                    tools:text="https://homepage.com"
+                    android:textSize="14sp" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/videosRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/castText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/cast"
-                    android:textSize="18sp" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/castRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
             </LinearLayout>
         </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>

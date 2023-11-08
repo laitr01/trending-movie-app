@@ -23,7 +23,12 @@ class FakeMovieDao(initMovies: List<LocalMovie>? = emptyList()): MovieDao {
         _movies?.put(movie.page,movie)
     }
 
-    override suspend fun deleteTrendingMovies(page: Int) {
-        _movies?.remove(page)
+    override suspend fun deleteTrendingMovies() {
+        TODO("Not yet implemented")
     }
+
+    override suspend fun getMaxPage(): Int? {
+        TODO("Not yet implemented")
+    }
+
 }

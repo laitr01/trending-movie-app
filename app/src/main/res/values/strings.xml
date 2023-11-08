@@ -9,4 +9,5 @@
     <string name="poster_image">Movie Poster</string>
     <string name="videos">Video</string>
     <string name="cast">Cast</string>
+    <string name="homepage">Homepage: %s</string>
 </resources>

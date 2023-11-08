@@ -17,5 +17,5 @@ interface MovieService {
     suspend fun requestMovieDetail(
         @Path("version") version: Int,
         @Path("movie_id") movieId: Long
-    ) : Response<RemoteMovie>
+    ) : Response<RemoteMovieDetail>
 }

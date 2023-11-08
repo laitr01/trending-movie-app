@@ -4,6 +4,7 @@ import com.trachlai.trendingmovieapp.data.MovieRepository
 import com.trachlai.trendingmovieapp.data.MovieRepositoryImpl
 import com.trachlai.trendingmovieapp.data.source.room.MovieDao
 import com.trachlai.trendingmovieapp.data.source.remote.MovieRemoteDataSource
+import com.trachlai.trendingmovieapp.data.source.room.MovieDetailDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,10 +21,17 @@ object RepositoryModule {
     fun provideMovieRepository(
         movieRemoteDataSource: MovieRemoteDataSource,
         movieDao: MovieDao,
+        movieDetailDao: MovieDetailDao,
         @DefaultDispatcher dispatcher: CoroutineDispatcher,
         @ApplicationScope scope: CoroutineScope,
-    ) : MovieRepository {
-        return MovieRepositoryImpl(movieRemoteDataSource, movieDao, dispatcher, scope)
+    ): MovieRepository {
+        return MovieRepositoryImpl(
+            movieRemoteDataSource,
+            movieDao,
+            movieDetailDao,
+            dispatcher,
+            scope
+        )
     }
 }
 

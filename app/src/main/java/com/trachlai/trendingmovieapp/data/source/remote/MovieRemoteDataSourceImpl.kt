@@ -41,7 +41,7 @@ class MovieRemoteDataSourceImpl @Inject constructor(
                     return@safeApiCall Result.Success(body)
                 }
             }
-            Result.Error(IOException("Error fetching trending movie ${response.code()} ${response.message()}"))
+            return@safeApiCall Result.Error(IOException("Error fetching trending movie ${response.code()} ${response.message()}"))
         },
         errorMessage = "Error fetching trending movie page $page"
     )
@@ -49,7 +49,7 @@ class MovieRemoteDataSourceImpl @Inject constructor(
     override suspend fun fetchTrendingMovieDetail(
         version: Int,
         movieId: Long
-    ): Result<RemoteMovie> =
+    ): Result<RemoteMovieDetail> =
         safeApiCall(
             call = {
                 val response =
@@ -60,7 +60,7 @@ class MovieRemoteDataSourceImpl @Inject constructor(
                         return@safeApiCall Result.Success(body)
                     }
                 }
-                Result.Error(IOException("Error fetching movie detail ${response.code()} ${response.message()}"))
+                return@safeApiCall Result.Error(IOException("Error fetching movie detail ${response.code()} ${response.message()}"))
             },
             errorMessage = "Error fetching movie detail for movie id $movieId"
         )

@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(
     tableName = "movie_detail",
-    indices = [Index(value = ["page"])]
+    indices = [Index(value = ["id"])]
 )
 data class LocalMovieDetail (
     @PrimaryKey

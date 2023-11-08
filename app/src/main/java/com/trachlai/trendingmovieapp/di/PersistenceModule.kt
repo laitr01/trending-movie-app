@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.trachlai.trendingmovieapp.data.source.room.MovieDao
 import com.trachlai.trendingmovieapp.data.source.room.MovieDatabase
+import com.trachlai.trendingmovieapp.data.source.room.MovieDetailDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,5 +27,11 @@ object PersistenceModule {
     @Singleton
     fun provideMovieDao(database: MovieDatabase): MovieDao {
         return database.movieDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideMovieDetailDao(database: MovieDatabase): MovieDetailDao {
+        return database.movieDetailDao()
     }
 }

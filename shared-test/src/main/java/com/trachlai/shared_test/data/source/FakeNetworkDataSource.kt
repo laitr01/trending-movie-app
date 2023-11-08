@@ -4,6 +4,7 @@ import com.trachlai.trendingmovieapp.data.source.remote.MovieRemoteDataSource
 import com.trachlai.trendingmovieapp.data.source.remote.RemoteMovie
 import com.trachlai.trendingmovieapp.data.source.remote.RemoteMovieResponse
 import com.trachlai.trendingmovieapp.common.Result
+import com.trachlai.trendingmovieapp.data.source.remote.RemoteMovieDetail
 import java.lang.Exception
 
 class FakeNetworkDataSource(
@@ -37,11 +38,9 @@ class FakeNetworkDataSource(
     override suspend fun fetchTrendingMovieDetail(
         version: Int,
         movieId: Long
-    ): Result<RemoteMovie> {
-        return if (movieDetail != null) {
-            Result.Success(movieDetail!!)
-        }else{
-            Result.Error(Exception("Movie detail is empty"))
-        }
+    ): Result<RemoteMovieDetail> {
+        TODO("Not yet implemented")
     }
+
+
 }

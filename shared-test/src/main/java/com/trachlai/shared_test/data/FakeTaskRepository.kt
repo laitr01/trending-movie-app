@@ -4,6 +4,7 @@ import com.trachlai.trendingmovieapp.data.Movie
 import com.trachlai.trendingmovieapp.data.MovieModel
 import com.trachlai.trendingmovieapp.data.MovieRepository
 import com.trachlai.trendingmovieapp.common.Result
+import com.trachlai.trendingmovieapp.data.source.MovieDetail
 
 class FakeTaskRepository: MovieRepository {
     override suspend fun getTrendingMovies(
@@ -23,11 +24,15 @@ class FakeTaskRepository: MovieRepository {
         TODO("Not yet implemented")
     }
 
-    override suspend fun fetchTrendingMovieDetail(version: Int, movieId: Long): Result<Movie> {
+    override suspend fun fetchTrendingMovieDetail(
+        version: Int,
+        movieId: Long
+    ): Result<MovieDetail> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun refresh(version: Int, page: Int, windowTime: String, updatedAt: Long): Exception? {
+    override suspend fun refresh(version: Int, page: Int, windowTime: String): Exception? {
         TODO("Not yet implemented")
     }
+
 }
