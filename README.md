@@ -1,10 +1,10 @@
 # Trending Movie App
 
-##Summary
+## Summary
 
 Simple list and detail app using TMDB API to show today's trending movies.
 
-##Technologies & Architecture
+## Technologies & Architecture
 <ul>
   <li>Minimum SDK level 24</li>
   <li>Android, Kotlin </li>
