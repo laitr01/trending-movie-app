@@ -40,7 +40,7 @@ https://github.com/laitr01/trending-movie-app/assets/14037475/ef342310-e301-4b68
 ## Setup
 
 - Clone and import the project in Android Studio
-- Edit the file local.properties and add the line: tmdb_api_key="YOUR_KEY"
+- Edit the file local.properties and add the line: api_key="YOUR_KEY"
 - Connect your Android phone or use the emulator to start the application
 
 
